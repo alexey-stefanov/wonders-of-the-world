@@ -1,7 +1,7 @@
 package com.alexstephanov.wondersoftheworld.listeners
 
-import com.alexstephanov.wondersoftheworld.model.ListItem
+import com.alexstephanov.wondersoftheworld.model.ListItemModel
 
 interface OnItemClickListener {
-    fun onItemClick(item: ListItem)
+    fun onItemClick(itemModel: ListItemModel)
 }
