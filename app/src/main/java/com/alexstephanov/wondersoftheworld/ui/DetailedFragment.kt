@@ -1,5 +1,6 @@
 package com.alexstephanov.wondersoftheworld.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,8 +50,18 @@ class DetailedFragment : Fragment() {
         thumbnail = view.findViewById(R.id.thumbnail_detailed)
         Picasso.get().load(url).into(thumbnail)
 
+        val creationDateString = "Дата создания: \n$creationDate"
+        val destructionDateString = "Дата разрушения: \n$destructionDate"
+
         title_detailed.text = title
+        location_detailed.text = location
+        creation_date_detailed.text = creationDateString
+        destruction_date_detailed.text = destructionDateString
         description_detailed.text = description
+
+        linear_layout_detailed.setOnClickListener{
+            activity?.supportFragmentManager?.popBackStack()
+        }
     }
 
 }

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout_detailed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTransparent"
-    android:onClick="onClick">
+    android:background="@color/colorDarkTransparent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/spacing_32dp"
-        android:layout_marginBottom="@dimen/spacing_32dp"
         android:layout_marginStart="@dimen/spacing_16dp"
+        android:layout_marginTop="@dimen/spacing_32dp"
         android:layout_marginEnd="@dimen/spacing_16dp"
+        android:layout_marginBottom="@dimen/spacing_32dp"
         tools:ignore="UselessParent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/card_border"
@@ -27,19 +28,68 @@
                 android:id="@+id/thumbnail_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_4dp"
                 android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/picture" />
+                android:layout_margin="@dimen/spacing_4dp"
+                android:contentDescription="@string/picture"
+                app:layout_constraintBottom_toTopOf="@+id/title_detailed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/title_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_4dp"
-                android:layout_gravity="center_horizontal"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/spacing_8dp"
+                app:layout_constraintBottom_toTopOf="@+id/location_detailed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/thumbnail_detailed"
                 tools:text="title" />
+
+            <TextView
+                android:id="@+id/location_detailed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_detailed"
+                app:layout_constraintBottom_toTopOf="@id/creation_date_detailed"
+                tools:text="location" />
+
+            <TextView
+                android:id="@+id/creation_date_detailed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="150dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintBottom_toTopOf="@+id/description_detailed"
+                app:layout_constraintEnd_toStartOf="@+id/destruction_date_detailed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/location_detailed"
+                tools:text="creation date" />
+
+            <TextView
+                android:id="@+id/destruction_date_detailed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="150dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintBottom_toTopOf="@+id/description_detailed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/creation_date_detailed"
+                app:layout_constraintTop_toBottomOf="@+id/location_detailed"
+                tools:text="destruction date" />
 
             <TextView
                 android:id="@+id/description_detailed"
@@ -47,9 +97,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_4dp"
                 android:textSize="18sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/creation_date_detailed"
                 tools:text="description" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

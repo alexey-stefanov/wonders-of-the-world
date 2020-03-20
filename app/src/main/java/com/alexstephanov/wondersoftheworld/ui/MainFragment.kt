@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexstephanov.wondersoftheworld.MainActivity
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
 import com.alexstephanov.wondersoftheworld.model.ListItemModel
+import com.alexstephanov.wondersoftheworld.model.ListModel
 import com.alexstephanov.wondersoftheworld.server_api.NetworkService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -43,22 +43,22 @@ class MainFragment : Fragment() {
         startQuery()
     }
 
-    private suspend fun queryProcess() : List<ListItemModel> {
+    private suspend fun queryProcess() : ListModel {
         return suspendCoroutine { continuation ->
             NetworkService.getService().getCurrentData()
-                    .enqueue(object : Callback<List<ListItemModel>>
+                    .enqueue(object : Callback<ListModel>
                     {
-                        override fun onResponse(call: Call<List<ListItemModel>>, response: Response<List<ListItemModel>>)
+                        override fun onResponse(call: Call<ListModel>, response: Response<ListModel>)
                         {
                             val result = response.body()
                             if (result != null)
                                 continuation.resume(result)
                             else
-                                continuation.resume(emptyList())
+                                continuation.resume(ListModel(emptyList(), emptyList()))
                         }
 
-                        override fun onFailure(call: Call<List<ListItemModel>>, t: Throwable) {
-                            continuation.resume(emptyList())
+                        override fun onFailure(call: Call<ListModel>, t: Throwable) {
+                            continuation.resume(ListModel(emptyList(), emptyList()))
                             t.printStackTrace()
                         }
                     })
@@ -66,27 +66,16 @@ class MainFragment : Fragment() {
     }
 
     private fun startQuery() {
-
         GlobalScope.launch(Dispatchers.Main) {
-            val result: List<ListItemModel> = queryProcess()
-            Log.e("wer", result[0].title)
+            val result: ListModel = queryProcess()
 
-            if (result.isNotEmpty()) {
-                val myAdapter = ListAdapter(result, object : OnItemClickListener {
+            if (result.ancient_wonders.isNotEmpty()) {
+                val myAdapter = ListAdapter(result.ancient_wonders, object : OnItemClickListener {
                     override fun onItemClick(itemModel: ListItemModel) {
-                        val bundle = Bundle()
-                        bundle.putString("title", itemModel.title)
-                        bundle.putString("description", itemModel.description)
-                        bundle.putString("location", itemModel.description)
-                        bundle.putString("date_cre", itemModel.creationDate)
-                        bundle.putString("date_des", itemModel.destructionDate)
-                        bundle.putString("latitude", itemModel.latitude)
-                        bundle.putString("longitude", itemModel.longitude)
-                        bundle.putString("url", itemModel.url)
-                        val fragment = DetailedFragment()
-                        fragment.arguments = bundle
-                        fragmentManager!!.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(R.id.fragment_place, fragment).addToBackStack("detailed").commitAllowingStateLoss()
-                    }
+                        val activity = activity
+                        if(activity is MainActivity)
+                            activity.showDetailedFragment(itemModel)
+                        }
                 })
 
                 recyclerView.adapter = myAdapter
