@@ -1,6 +1,7 @@
 package com.alexstephanov.wondersoftheworld.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.alexstephanov.wondersoftheworld.R
+import com.alexstephanov.wondersoftheworld.model.ListItemModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detailed.*
 
-class DetailedFragment : Fragment() {
+class DetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment() {
 
     private var title: String? = null
     private var description: String? = null
@@ -23,17 +25,23 @@ class DetailedFragment : Fragment() {
     private var url: String? = null
     private lateinit var thumbnail: ImageView
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        listener = context as OnFragmentEventListener
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        title = arguments?.getString("title")
-        description = arguments?.getString("description")
-        location = arguments?.getString("location")
-        creationDate = arguments?.getString("date_cre")
-        destructionDate = arguments?.getString("date_des")
-        latitude = arguments?.getString("latitude")
-        longitude = arguments?.getString("longitude")
-        url = arguments?.getString("url")
+        title = arguments?.getString("title") ?: ""
+        description = arguments?.getString("description") ?: ""
+        location = arguments?.getString("location") ?: ""
+        creationDate = arguments?.getString("date_cre") ?: ""
+        destructionDate = arguments?.getString("date_des") ?: ""
+        latitude = arguments?.getString("latitude") ?: ""
+        longitude = arguments?.getString("longitude") ?: ""
+        url = arguments?.getString("url") ?: ""
     }
 
     override fun onCreateView(
@@ -60,8 +68,12 @@ class DetailedFragment : Fragment() {
         description_detailed.text = description
 
         linear_layout_detailed.setOnClickListener{
-            activity?.supportFragmentManager?.popBackStack()
+            listener?.onBackgroundClickEvent()
         }
+    }
+
+    interface OnFragmentEventListener {
+        fun onBackgroundClickEvent()
     }
 
 }

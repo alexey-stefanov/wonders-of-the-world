@@ -1,6 +1,13 @@
 package com.alexstephanov.wondersoftheworld.model
 
-data class ListModel(
-    val ancient_wonders: List<ListItemModel>,
-    val modern_wonders: List<ListItemModel>
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+class ListModel(
+    @SerializedName("ancient_wonders")
+    @Expose
+    val ancientWonders: List<ListItemModel>,
+    @SerializedName("modern_wonders")
+    @Expose
+    val modernWonders: List<ListItemModel>
 )

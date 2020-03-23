@@ -11,15 +11,15 @@ import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
 import com.alexstephanov.wondersoftheworld.model.ListItemModel
 import com.squareup.picasso.Picasso
 
-class ListAdapter(private val items: List<ListItemModel>, private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<ListAdapter.Holder>() {
+class ListAdapter(private val items: List<ListItemModel>?, private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<ListAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false))
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = items!!.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items!![position])
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,7 +30,7 @@ class ListAdapter(private val items: List<ListItemModel>, private val onItemClic
             Picasso.get().load(item.url).into(thumbnail)
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION)
-                    onItemClickListener.onItemClick(items[adapterPosition])
+                    onItemClickListener.onItemClick(items!![adapterPosition])
             }
         }
     }
