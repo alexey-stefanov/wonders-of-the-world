@@ -11,16 +11,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
-import com.alexstephanov.wondersoftheworld.model.DataModel
 import com.alexstephanov.wondersoftheworld.model.ListItemModel
 import com.alexstephanov.wondersoftheworld.model.ListModel
 
-class MainFragment(dataModel: DataModel?, private val fragmentId: Int, private var listener: OnFragmentEventListener? = null) : Fragment() {
+class MainFragment(listModel: ListModel?, private val fragmentId: Int, private var listener: OnFragmentEventListener? = null) : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private val itemsList = when(fragmentId) {
-        0 -> dataModel?.listModel?.ancientWonders
-        1 -> dataModel?.listModel?.modernWonders
+        0 -> listModel?.ancientWonders
+        1 -> listModel?.modernWonders
         else -> null
         }
 

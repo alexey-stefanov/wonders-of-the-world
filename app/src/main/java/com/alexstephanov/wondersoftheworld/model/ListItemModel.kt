@@ -1,12 +1,16 @@
 package com.alexstephanov.wondersoftheworld.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class ListItemModel(
+@Entity(tableName = "ancient_table")
+data class ListItemModel(
+    @PrimaryKey
     @SerializedName("id")
     @Expose
-    val id: String,
+    val id: Int,
     @SerializedName("title")
     @Expose
     val title: String,
@@ -24,10 +28,10 @@ class ListItemModel(
     val destructionDate: String,
     @SerializedName("latitude")
     @Expose
-    val latitude: String,
+    val latitude: Double,
     @SerializedName("longitude")
     @Expose
-    val longitude: String,
+    val longitude: Double,
     @SerializedName("url")
     @Expose
     val url: String

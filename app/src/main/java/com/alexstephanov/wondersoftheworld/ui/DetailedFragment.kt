@@ -1,6 +1,5 @@
 package com.alexstephanov.wondersoftheworld.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,19 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.alexstephanov.wondersoftheworld.R
-import com.alexstephanov.wondersoftheworld.model.ListItemModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detailed.*
 
 class DetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment() {
 
+    private var id: Int? = null
     private var title: String? = null
     private var description: String? = null
     private var location: String? = null
     private var creationDate: String? = null
     private var destructionDate: String? = null
-    private var latitude: String? = null
-    private var longitude: String? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
     private var url: String? = null
     private lateinit var thumbnail: ImageView
 
@@ -34,13 +33,14 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        id = arguments?.getInt("id") ?: 0
         title = arguments?.getString("title") ?: ""
         description = arguments?.getString("description") ?: ""
         location = arguments?.getString("location") ?: ""
         creationDate = arguments?.getString("date_cre") ?: ""
         destructionDate = arguments?.getString("date_des") ?: ""
-        latitude = arguments?.getString("latitude") ?: ""
-        longitude = arguments?.getString("longitude") ?: ""
+        latitude = arguments?.getDouble("latitude") ?: 0.0
+        longitude = arguments?.getDouble("longitude") ?: 0.0
         url = arguments?.getString("url") ?: ""
     }
 
@@ -58,8 +58,8 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
         thumbnail = view.findViewById(R.id.thumbnail_detailed)
         Picasso.get().load(url).into(thumbnail)
 
-        val creationDateString = "Дата создания: \n$creationDate"
-        val destructionDateString = "Дата разрушения: \n$destructionDate"
+        val creationDateString = "$creationDate"
+        val destructionDateString = "$destructionDate"
 
         title_detailed.text = title
         location_detailed.text = location

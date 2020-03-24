@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
 
         GlobalScope.launch(Dispatchers.Main) {
             result = getDataFromNetwork()
-            ancientFragment = MainFragment(result, FRAGMENT_ANCIENT)
-            modernFragment = MainFragment(result, FRAGMENT_MODERN)
+            ancientFragment = MainFragment(result.listModel, FRAGMENT_ANCIENT)
+            modernFragment = MainFragment(result.listModel, FRAGMENT_MODERN)
             supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment).commitAllowingStateLoss()
         }
     }
@@ -60,13 +60,14 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
 
     override fun onItemClickEvent(itemModel: ListItemModel) {
         val bundle = Bundle()
+        bundle.putInt("id", itemModel.id)
         bundle.putString("title", itemModel.title)
         bundle.putString("description", itemModel.description)
         bundle.putString("location", itemModel.location)
         bundle.putString("date_cre", itemModel.creationDate)
         bundle.putString("date_des", itemModel.destructionDate)
-        bundle.putString("latitude", itemModel.latitude)
-        bundle.putString("longitude", itemModel.longitude)
+        bundle.putDouble("latitude", itemModel.latitude)
+        bundle.putDouble("longitude", itemModel.longitude)
         bundle.putString("url", itemModel.url)
         val fragment = DetailedFragment()
         fragment.arguments = bundle

@@ -19,6 +19,11 @@
             android:layout_marginTop="@dimen/spacing_8dp"
             android:layout_marginBottom="@dimen/spacing_8dp"
             android:layout_marginStart="@dimen/spacing_8dp"
+            style="?android:attr/buttonStyle"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             android:background="@drawable/button_left_border"
             android:layout_weight="1"/>
         <Button
@@ -30,6 +35,11 @@
             android:layout_marginTop="@dimen/spacing_8dp"
             android:layout_marginBottom="@dimen/spacing_8dp"
             android:layout_marginEnd="@dimen/spacing_8dp"
+            style="?android:attr/buttonStyle"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             android:background="@drawable/button_right_border"
             android:layout_weight="1"/>
 
