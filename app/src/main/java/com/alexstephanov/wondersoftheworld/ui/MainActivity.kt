@@ -1,15 +1,15 @@
-package com.alexstephanov.wondersoftheworld
+package com.alexstephanov.wondersoftheworld.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentTransaction
+import com.alexstephanov.wondersoftheworld.R
+import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
 import com.alexstephanov.wondersoftheworld.model.DataModel
 import com.alexstephanov.wondersoftheworld.model.ListItemModel
-import com.alexstephanov.wondersoftheworld.model.ListModel
+import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
 import com.alexstephanov.wondersoftheworld.server_api.NetworkService
-import com.alexstephanov.wondersoftheworld.ui.DetailedFragment
-import com.alexstephanov.wondersoftheworld.ui.MainFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,12 +19,12 @@ import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, DetailedFragment.OnFragmentEventListener {
+class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListener<T>, DetailedFragment.OnFragmentEventListener {
 
     private lateinit var result: DataModel
 
-    private lateinit var ancientFragment: MainFragment
-    private lateinit var modernFragment: MainFragment
+    private lateinit var ancientFragment: MainFragment<AncientWondersListItemModel>
+    private lateinit var modernFragment: MainFragment<ModernWondersListItemModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +32,12 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
 
         GlobalScope.launch(Dispatchers.Main) {
             result = getDataFromNetwork()
-            ancientFragment = MainFragment(result.listModel, FRAGMENT_ANCIENT)
-            modernFragment = MainFragment(result.listModel, FRAGMENT_MODERN)
+            ancientFragment = MainFragment(result.listModel.ancientWonders,
+                LAYOUT_ANCIENT
+            )
+            modernFragment = MainFragment(result.listModel.modernWonders,
+                LAYOUT_MODERN
+            )
             supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment).commitAllowingStateLoss()
         }
     }
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
                     {
                         val result = response.body()
 
+
                         if (result != null)
                             continuation.resume(result)
                     }
@@ -58,20 +63,23 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
         }
     }
 
-    override fun onItemClickEvent(itemModel: ListItemModel) {
+    override fun onItemClickEvent(itemModel: T) {
         val bundle = Bundle()
-        bundle.putInt("id", itemModel.id)
-        bundle.putString("title", itemModel.title)
-        bundle.putString("description", itemModel.description)
-        bundle.putString("location", itemModel.location)
-        bundle.putString("date_cre", itemModel.creationDate)
-        bundle.putString("date_des", itemModel.destructionDate)
-        bundle.putDouble("latitude", itemModel.latitude)
-        bundle.putDouble("longitude", itemModel.longitude)
-        bundle.putString("url", itemModel.url)
+        if(itemModel is ListItemModel) {
+            bundle.putInt("id", itemModel.id)
+            bundle.putString("title", itemModel.title)
+            bundle.putString("description", itemModel.description)
+            bundle.putString("location", itemModel.location)
+            bundle.putString("date_cre", itemModel.creationDate)
+            bundle.putString("date_des", itemModel.destructionDate)
+            bundle.putDouble("latitude", itemModel.latitude)
+            bundle.putDouble("longitude", itemModel.longitude)
+            bundle.putString("url", itemModel.url)
+        }
         val fragment = DetailedFragment()
         fragment.arguments = bundle
-        supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(R.id.fragment_place, fragment).addToBackStack("detailed").commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(
+            R.id.fragment_place, fragment).addToBackStack("detailed").commitAllowingStateLoss()
     }
 
     override fun onTopButtonsClickEvent(buttonId: Int) {
@@ -86,7 +94,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentEventListener, 
     }
 
     companion object {
-        const val FRAGMENT_ANCIENT = 0
-        const val FRAGMENT_MODERN = 1
+        const val LAYOUT_ANCIENT = R.layout.ancient_wonders_list_item
+        const val LAYOUT_MODERN = R.layout.modern_wonders_list_item
     }
 }

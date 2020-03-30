@@ -3,16 +3,26 @@ package com.alexstephanov.wondersoftheworld.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.alexstephanov.wondersoftheworld.model.ListItemModel
+import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
+import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
 
 @Dao
 interface WondersDao {
-    @Query("SELECT * FROM ancient_table")
-    fun getAllItems() : List<ListItemModel>
+    @Query("SELECT * FROM ancient_wonders_table")
+    fun getAllAncientWondersItems() : List<AncientWondersListItemModel>
 
     @Insert
-    fun addItem(listItem: ListItemModel)
+    fun addAncientWondersItem(listItem: AncientWondersListItemModel)
 
     @Insert
-    fun addItems(listItemList: List<ListItemModel>)
+    fun addAncientsWondersItems(listItemList: List<AncientWondersListItemModel>)
+
+    @Query("SELECT * FROM modern_wonders_table")
+    fun getAllModernWondersItems() : List<ModernWondersListItemModel>
+
+    @Insert
+    fun addModernWondersItem(listItem: ModernWondersListItemModel)
+
+    @Insert
+    fun addModernWondersItems(listItemList: List<ModernWondersListItemModel>)
 }

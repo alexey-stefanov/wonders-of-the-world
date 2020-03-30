@@ -8,7 +8,7 @@ object DatabaseService {
     lateinit var context: Context
 
     init {
-        database = Room.databaseBuilder(context, WondersDatabase::class.java, "wonders_database.db")
+        database = Room.databaseBuilder(context, WondersDatabase::class.java, "wonders_database")
             .build()
     }
 }

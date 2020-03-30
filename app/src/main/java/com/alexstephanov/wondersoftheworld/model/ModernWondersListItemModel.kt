@@ -5,34 +5,34 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "ancient_table")
-data class ListItemModel(
+@Entity(tableName = "modern_wonders_table")
+data class ModernWondersListItemModel(
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    val id: Int,
+    override val id: Int,
     @SerializedName("title")
     @Expose
-    val title: String,
+    override val title: String,
     @SerializedName("description")
     @Expose
-    val description: String,
+    override val description: String,
     @SerializedName("location")
     @Expose
-    val location: String,
+    override val location: String,
     @SerializedName("date_cre")
     @Expose
-    val creationDate: String,
+    override val creationDate: String,
     @SerializedName("date_des")
     @Expose
-    val destructionDate: String,
+    override val destructionDate: String,
     @SerializedName("latitude")
     @Expose
-    val latitude: Double,
+    override val latitude: Double,
     @SerializedName("longitude")
     @Expose
-    val longitude: Double,
+    override val longitude: Double,
     @SerializedName("url")
     @Expose
-    val url: String
-)
+    override val url: String
+) : ListItemModel

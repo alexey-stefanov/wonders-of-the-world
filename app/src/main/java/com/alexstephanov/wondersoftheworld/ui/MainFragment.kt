@@ -2,6 +2,7 @@ package com.alexstephanov.wondersoftheworld.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexstephanov.wondersoftheworld.R
+import com.alexstephanov.wondersoftheworld.list.GenericAdapter
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
-import com.alexstephanov.wondersoftheworld.model.ListItemModel
-import com.alexstephanov.wondersoftheworld.model.ListModel
 
-class MainFragment(listModel: ListModel?, private val fragmentId: Int, private var listener: OnFragmentEventListener? = null) : Fragment() {
+class MainFragment<T>(private val itemList: List<T>, private val layoutId: Int, private var listener: OnFragmentEventListener<T>? = null) : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private val itemsList = when(fragmentId) {
-        0 -> listModel?.ancientWonders
-        1 -> listModel?.modernWonders
-        else -> null
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        listener = context as OnFragmentEventListener
+        listener = context as OnFragmentEventListener<T>?
     }
 
     override fun onCreateView(
@@ -39,13 +34,13 @@ class MainFragment(listModel: ListModel?, private val fragmentId: Int, private v
         val buttonAncient: Button = view.findViewById(R.id.button_ancient_main)
         val buttonModern: Button = view.findViewById(R.id.button_modern_main)
 
-        when(fragmentId) {
-            0 -> {
+        when(layoutId) {
+            R.layout.ancient_wonders_list_item -> {
                 buttonModern.setOnClickListener {
                     listener?.onTopButtonsClickEvent(BUTTON_MODERN)
                 }
             }
-            1 -> {
+            R.layout.modern_wonders_list_item -> {
                 buttonAncient.setOnClickListener {
                     listener?.onTopButtonsClickEvent(BUTTON_ANCIENT)
                 }
@@ -58,20 +53,20 @@ class MainFragment(listModel: ListModel?, private val fragmentId: Int, private v
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (itemsList != null) {
-            val myAdapter = ListAdapter(itemsList, object : OnItemClickListener {
-                override fun onItemClick(itemModel: ListItemModel) {
-                    listener?.onItemClickEvent(itemModel)
-                }
-            })
-            recyclerView.adapter = myAdapter
-            recyclerView.layoutManager = GridLayoutManager(context, 3)
+        val dataAdapter = object : GenericAdapter<T>(itemList, object : OnItemClickListener<T> {
+            override fun onItemClick(itemModel: T) {
+                listener?.onItemClickEvent(itemModel)
+            }
+        }) {
+            override fun getLayoutId(position: Int, obj: T): Int = layoutId
         }
+        recyclerView.adapter = dataAdapter
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
 
     }
 
-    interface OnFragmentEventListener {
-        fun onItemClickEvent(itemModel: ListItemModel)
+    interface OnFragmentEventListener<T> {
+        fun onItemClickEvent(itemModel: T)
         fun onTopButtonsClickEvent(buttonId: Int)
     }
 
