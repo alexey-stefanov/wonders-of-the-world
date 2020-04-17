@@ -43,43 +43,23 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
             GlobalScope.launch {
                val result = getDataFromNetwork()
 
-                GlobalScope.launch(Dispatchers.IO) {
-                    wondersDao.deleteAllAncientWondersItems()
-                    wondersDao.deleteAllModernWondersItems()
-                    wondersDao.deleteAllNatureWondersItems()
+                wondersDao.deleteAllAncientWondersItems()
+                wondersDao.deleteAllModernWondersItems()
+                wondersDao.deleteAllNatureWondersItems()
 
-                    wondersDao.addAncientsWondersItems(result.listModel.ancientWonders)
-                    wondersDao.addModernWondersItems(result.listModel.modernWonders)
-                    wondersDao.addNatureWondersItems(result.listModel.natureWonders)
+                wondersDao.addAncientsWondersItems(result.listModel.ancientWonders)
+                wondersDao.addModernWondersItems(result.listModel.modernWonders)
+                wondersDao.addNatureWondersItems(result.listModel.natureWonders)
 
-                    ancientFragment = MainFragment(result.listModel.ancientWonders,
-                        LAYOUT_ANCIENT
-                    )
-                    modernFragment = MainFragment(result.listModel.modernWonders,
-                        LAYOUT_MODERN
-                    )
-                    natureFragment = MainFragment(result.listModel.natureWonders,
-                        LAYOUT_NATURE)
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
-
-                }
-
-                /*ancientFragment = MainFragment(result.listModel.ancientWonders,
-                    LAYOUT_ANCIENT
-                )
-                modernFragment = MainFragment(result.listModel.modernWonders,
-                    LAYOUT_MODERN
-                )
-                natureFragment = MainFragment(result.listModel.natureWonders,
-                    LAYOUT_NATURE)
+                ancientFragment = MainFragment(result.listModel.ancientWonders, LAYOUT_ANCIENT)
+                modernFragment = MainFragment(result.listModel.modernWonders, LAYOUT_MODERN)
+                natureFragment = MainFragment(result.listModel.natureWonders, LAYOUT_NATURE)
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
-   */         }
+
+                Log.d(TAG, "Load data from network.")
+            }
 
         } else {
-            text_view_network_main.text = "Оффлайн режим"
-            text_view_network_main.setBackgroundResource(R.color.colorRed)
-            text_view_network_main.visibility = View.VISIBLE
-
             GlobalScope.launch(Dispatchers.IO) {
                 val result = getDataFromDatabase(wondersDao)
 
@@ -96,25 +76,16 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
                     natureFragment = MainFragment(result.natureWonders,
                         LAYOUT_NATURE)
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
+                    showNetworkLostConnectionTextView("Оффлайн режим")
+
+                    Log.d(TAG, "Load data from database.")
                 } else {
                     showNetworkLostConnectionTextView("Не удалось загрузить данные! Проверьте подключение к интернету!")
+
+                    Log.d(TAG, "Can't load data.")
                 }
             }
         }
-
-        /*GlobalScope.launch(Dispatchers.IO) {
-            if (wondersDao.getAllAncientWondersItems().isNotEmpty() and
-                    wondersDao.getAllModernWondersItems().isNotEmpty() and
-                    wondersDao.getAllNatureWondersItems().isNotEmpty()) {
-
-                ancientFragment = MainFragment(wondersDao.getAllAncientWondersItems(), LAYOUT_ANCIENT)
-                modernFragment = MainFragment(wondersDao.getAllModernWondersItems(), LAYOUT_MODERN)
-                natureFragment = MainFragment(wondersDao.getAllNatureWondersItems(), LAYOUT_NATURE)
-
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment).commitAllowingStateLoss()
-            } else
-                startQuery()
-        }*/
     }
 
     private fun checkNetworkConnection(context: Context):Boolean {
@@ -128,33 +99,6 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         text_view_network_main.setBackgroundResource(R.color.colorRed)
         text_view_network_main.visibility = View.VISIBLE
     }
-
-    /*private fun startQuery() {
-
-        GlobalScope.launch(Dispatchers.Main) {
-            result = getDataFromNetwork()
-            if(result.listModel.ancientWonders.isNotEmpty() and
-                    result.listModel.modernWonders.isNotEmpty() and
-                    result.listModel.natureWonders.isNotEmpty()) {
-
-                wondersDao.addAncientsWondersItems(result.listModel.ancientWonders)
-                wondersDao.addModernWondersItems(result.listModel.modernWonders)
-                wondersDao.addNatureWondersItems(result.listModel.natureWonders)
-
-            } else {
-                Toast.makeText(this@MainActivity, "empty list", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        GlobalScope.launch(Dispatchers.IO) {
-            ancientFragment = MainFragment(wondersDao.getAllAncientWondersItems(), LAYOUT_ANCIENT)
-            modernFragment = MainFragment(wondersDao.getAllModernWondersItems(), LAYOUT_MODERN)
-            natureFragment = MainFragment(wondersDao.getAllNatureWondersItems(), LAYOUT_NATURE)
-        }
-
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment).commitAllowingStateLoss()
-
-    }*/
 
     private suspend fun getDataFromDatabase(wondersDao: WondersDao) : ListModel {
         return suspendCoroutine { continuation ->
@@ -240,5 +184,6 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         const val LAYOUT_ANCIENT = R.layout.ancient_wonders_list_item
         const val LAYOUT_MODERN = R.layout.modern_wonders_list_item
         const val LAYOUT_NATURE = R.layout.nature_wonders_list_item
+        const val TAG = "MainActivity"
     }
 }
