@@ -2,7 +2,7 @@ package com.alexstephanov.wondersoftheworld.model
 
 interface ListItemModel {
     val id: Int
-    val title: String
+    val name: String
     val description: String
     val location: String
     val creationDate: String

@@ -10,15 +10,16 @@ import androidx.fragment.app.Fragment
 import com.alexstephanov.wondersoftheworld.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detailed.*
+import kotlinx.android.synthetic.main.fragment_detailed.linear_layout_detailed
+import kotlinx.android.synthetic.main.fragment_nature_wonders_detailed.*
 
-class DetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment() {
+class NatureWondersDetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment() {
 
     private var id: Int? = null
     private var name: String? = null
     private var description: String? = null
+    private var type: String? = null
     private var location: String? = null
-    private var creationDate: String? = null
-    private var destructionDate: String? = null
     private var latitude: Double? = null
     private var longitude: Double? = null
     private var url: String? = null
@@ -36,9 +37,8 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
         id = arguments?.getInt("id") ?: 0
         name = arguments?.getString("name") ?: ""
         description = arguments?.getString("description") ?: ""
+        type = arguments?.getString("type") ?: ""
         location = arguments?.getString("location") ?: ""
-        creationDate = arguments?.getString("date_cre") ?: ""
-        destructionDate = arguments?.getString("date_des") ?: ""
         latitude = arguments?.getDouble("latitude") ?: 0.0
         longitude = arguments?.getDouble("longitude") ?: 0.0
         url = arguments?.getString("url") ?: ""
@@ -49,25 +49,21 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_detailed, container, false)
+        return inflater.inflate(R.layout.fragment_nature_wonders_detailed, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        thumbnail = view.findViewById(R.id.thumbnail_detailed)
+        thumbnail = view.findViewById(R.id.thumbnail_nature_wonders_detailed)
         Picasso.get().load(url).into(thumbnail)
 
-        val creationDateString = "$creationDate"
-        val destructionDateString = "$destructionDate"
+        name_nature_wonders_detailed.text = name
+        type_nature_wonders_detailed.text = type
+        location_nature_wonders_detailed.text = location
+        description_nature_wonders_detailed.text = description
 
-        name_detailed.text = name
-        location_detailed.text = location
-        creation_date_detailed.text = creationDateString
-        destruction_date_detailed.text = destructionDateString
-        description_detailed.text = description
-
-        linear_layout_detailed.setOnClickListener{
+        linear_layout_nature_wonders_detailed.setOnClickListener{
             listener?.onBackgroundClickEvent()
         }
     }

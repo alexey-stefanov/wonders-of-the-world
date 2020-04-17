@@ -33,16 +33,31 @@ class MainFragment<T>(private val itemList: List<T>, private val layoutId: Int, 
         recyclerView = view!!.findViewById(R.id.recycler_view_main_list)
         val buttonAncient: Button = view.findViewById(R.id.button_ancient_main)
         val buttonModern: Button = view.findViewById(R.id.button_modern_main)
+        val buttonNature: Button = view.findViewById(R.id.button_nature_main)
 
         when(layoutId) {
             R.layout.ancient_wonders_list_item -> {
                 buttonModern.setOnClickListener {
                     listener?.onTopButtonsClickEvent(BUTTON_MODERN)
                 }
+                buttonNature.setOnClickListener {
+                    listener?.onTopButtonsClickEvent(BUTTON_NATURE)
+                }
             }
             R.layout.modern_wonders_list_item -> {
                 buttonAncient.setOnClickListener {
                     listener?.onTopButtonsClickEvent(BUTTON_ANCIENT)
+                }
+                buttonNature.setOnClickListener {
+                    listener?.onTopButtonsClickEvent(BUTTON_NATURE)
+                }
+            }
+            R.layout.nature_wonders_list_item -> {
+                buttonAncient.setOnClickListener {
+                    listener?.onTopButtonsClickEvent(BUTTON_ANCIENT)
+                }
+                buttonModern.setOnClickListener {
+                    listener?.onTopButtonsClickEvent(BUTTON_MODERN)
                 }
             }
         }
@@ -73,5 +88,6 @@ class MainFragment<T>(private val itemList: List<T>, private val layoutId: Int, 
     companion object {
         const val BUTTON_ANCIENT = 0
         const val BUTTON_MODERN = 1
+        const val BUTTON_NATURE = 2
     }
 }

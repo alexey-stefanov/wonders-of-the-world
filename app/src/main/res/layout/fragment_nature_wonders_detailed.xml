@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout_detailed"
+    android:id="@+id/linear_layout_nature_wonders_detailed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDarkTransparent">
@@ -25,19 +25,19 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/thumbnail_detailed"
+                android:id="@+id/thumbnail_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/spacing_8dp"
                 android:contentDescription="@string/picture"
-                app:layout_constraintBottom_toTopOf="@+id/name_detailed"
+                app:layout_constraintBottom_toTopOf="@+id/name_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/name_detailed"
+                android:id="@+id/name_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_4dp"
@@ -45,14 +45,14 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/location_detailed"
+                app:layout_constraintBottom_toTopOf="@+id/location_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/thumbnail_detailed"
+                app:layout_constraintTop_toBottomOf="@+id/thumbnail_nature_wonders_detailed"
                 tools:text="name" />
 
             <TextView
-                android:id="@+id/location_detailed"
+                android:id="@+id/location_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_4dp"
@@ -60,66 +60,24 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_detailed"
+                app:layout_constraintTop_toBottomOf="@id/name_nature_wonders_detailed"
+                app:layout_constraintBottom_toTopOf="@id/type_nature_wonders_detailed"
                 tools:text="location" />
 
-
             <TextView
-                android:id="@+id/creation_date_text_detailed"
+                android:id="@+id/type_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4dp"
-                android:maxWidth="150dp"
-                android:text="@string/creation_date"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/creation_date_detailed"
-                app:layout_constraintEnd_toStartOf="@+id/destruction_date_text_detailed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/location_detailed" />
-
-            <TextView
-                android:id="@+id/creation_date_detailed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="150dp"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/destruction_date_detailed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/creation_date_text_detailed"
-                tools:text="2000" />
-
-            <TextView
-                android:id="@+id/destruction_date_text_detailed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_4dp"
-                android:maxWidth="150dp"
-                android:text="@string/destruction_date"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/destruction_date_detailed"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/creation_date_text_detailed"
-                app:layout_constraintTop_toBottomOf="@+id/location_detailed" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location_nature_wonders_detailed"
+                app:layout_constraintBottom_toTopOf="@id/description_nature_wonders_detailed"
+                tools:text="type"/>
 
             <TextView
-                android:id="@+id/destruction_date_detailed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="150dp"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/creation_date_detailed"
-                app:layout_constraintTop_toBottomOf="@+id/destruction_date_text_detailed"
-                tools:text="2000" />
-
-            <TextView
-                android:id="@+id/description_text_detailed"
+                android:id="@+id/description_text_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description"
@@ -127,13 +85,13 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/spacing_16dp"
-                app:layout_constraintBottom_toTopOf="@id/description_detailed"
+                app:layout_constraintBottom_toTopOf="@id/description_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/destruction_date_detailed" />
+                app:layout_constraintTop_toBottomOf="@+id/type_nature_wonders_detailed" />
 
             <TextView
-                android:id="@+id/description_detailed"
+                android:id="@+id/description_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_8dp"
@@ -142,7 +100,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description_text_detailed"
+                app:layout_constraintTop_toBottomOf="@+id/description_text_nature_wonders_detailed"
                 tools:text="description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

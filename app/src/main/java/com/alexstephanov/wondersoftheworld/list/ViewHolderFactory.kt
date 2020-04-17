@@ -1,15 +1,16 @@
 package com.alexstephanov.wondersoftheworld.list
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
 import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
 import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
+import com.alexstephanov.wondersoftheworld.model.NatureWondersListItemModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ancient_wonders_list_item.view.*
 import kotlinx.android.synthetic.main.modern_wonders_list_item.view.*
+import kotlinx.android.synthetic.main.nature_wonders_list_item.view.*
 import java.lang.Exception
 
 object ViewHolderFactory {
@@ -17,6 +18,7 @@ object ViewHolderFactory {
         return when (viewType) {
             R.layout.ancient_wonders_list_item -> AncientWondersViewHolder(view)
             R.layout.modern_wonders_list_item -> ModernWondersViewHolder(view)
+            R.layout.nature_wonders_list_item -> NatureWondersViewHolder(view)
             else -> throw Exception("Wrong view type")
         }
     }
@@ -28,7 +30,7 @@ object ViewHolderFactory {
             listener: OnItemClickListener<AncientWondersListItemModel>?
         ) {
             itemView.apply {
-                ancient_wonders_item_title.text = item.title
+                ancient_wonders_item_title.text = item.name
                 Picasso.get().load(item.url).into(ancient_wonders_item_thumbnail)
                 setOnClickListener {
                     listener?.onItemClick(item)
@@ -44,7 +46,7 @@ object ViewHolderFactory {
             listener: OnItemClickListener<ModernWondersListItemModel>?
         ) {
             itemView.apply {
-                modern_wonders_item_title.text = item.title
+                modern_wonders_item_title.text = item.name
                 Picasso.get().load(item.url).into(modern_wonders_item_thumbnail)
                 setOnClickListener {
                     listener?.onItemClick(item)
@@ -53,5 +55,20 @@ object ViewHolderFactory {
         }
     }
 
+    class NatureWondersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        GenericAdapter.Binder<NatureWondersListItemModel> {
+        override fun bind(
+            item: NatureWondersListItemModel,
+            listener: OnItemClickListener<NatureWondersListItemModel>?
+        ) {
+            itemView.apply {
+                nature_wonders_item_title.text = item.name
+                Picasso.get().load(item.url).into(nature_wonders_item_thumbnail)
+                setOnClickListener {
+                    listener?.onItemClick(item)
+                }
+            }
+        }
+    }
 
 }

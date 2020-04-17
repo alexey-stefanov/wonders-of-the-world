@@ -9,5 +9,8 @@ data class ListModel(
     val ancientWonders: List<AncientWondersListItemModel>,
     @SerializedName("modern_wonders")
     @Expose
-    val modernWonders: List<ModernWondersListItemModel>
+    val modernWonders: List<ModernWondersListItemModel>,
+    @SerializedName("nature_wonders")
+    @Expose
+    val natureWonders: List<NatureWondersListItemModel>
 )

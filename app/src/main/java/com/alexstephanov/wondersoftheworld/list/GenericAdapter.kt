@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
 
 abstract class GenericAdapter<T>(
@@ -34,7 +35,7 @@ abstract class GenericAdapter<T>(
 
     protected abstract fun getLayoutId(position: Int, obj: T): Int
 
-    protected open fun getViewHolder(view: View, viewType: Int) : RecyclerView.ViewHolder {
+    private fun getViewHolder(view: View, viewType: Int) : RecyclerView.ViewHolder {
         return ViewHolderFactory.create(view, viewType)
     }
 

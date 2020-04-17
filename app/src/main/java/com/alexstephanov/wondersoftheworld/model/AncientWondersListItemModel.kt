@@ -11,9 +11,9 @@ data class AncientWondersListItemModel(
     @SerializedName("id")
     @Expose
     override val id: Int,
-    @SerializedName("title")
+    @SerializedName("name")
     @Expose
-    override val title: String,
+    override val name: String,
     @SerializedName("description")
     @Expose
     override val description: String,

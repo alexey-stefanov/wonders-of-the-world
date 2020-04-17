@@ -2,7 +2,8 @@
     <string name="app_name">Wonders of the world</string>
     <string name="button_ancient">Древние</string>
     <string name="button_modern">Современные</string>
-    <string name="picture">Picture</string>
+    <string name="button_nature">Природные</string>
+    <string name="picture">Картинка</string>
     <string name="description">Описание</string>
     <string name="creation_date">Дата создания</string>
     <string name="destruction_date">Дата разрушения</string>
