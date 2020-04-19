@@ -4,13 +4,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.database.WondersDao
 import com.alexstephanov.wondersoftheworld.database.WondersDatabase
@@ -32,56 +31,41 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
     private var modernFragment: MainFragment<ModernWondersListItemModel>? = null
     private var natureFragment: MainFragment<NatureWondersListItemModel>? = null
 
+    private lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        toolbar = findViewById(R.id.toolbar_main)
+        setSupportActionBar(toolbar)
+
         val wondersDao = WondersDatabase.getInstance(this).getWondersDao()
 
         if(checkNetworkConnection(this)) {
-
             GlobalScope.launch {
-               val result = getDataFromNetwork()
-
-                wondersDao.deleteAllAncientWondersItems()
-                wondersDao.deleteAllModernWondersItems()
-                wondersDao.deleteAllNatureWondersItems()
-
-                wondersDao.addAncientsWondersItems(result.listModel.ancientWonders)
-                wondersDao.addModernWondersItems(result.listModel.modernWonders)
-                wondersDao.addNatureWondersItems(result.listModel.natureWonders)
-
-                ancientFragment = MainFragment(result.listModel.ancientWonders, LAYOUT_ANCIENT)
-                modernFragment = MainFragment(result.listModel.modernWonders, LAYOUT_MODERN)
-                natureFragment = MainFragment(result.listModel.natureWonders, LAYOUT_NATURE)
+                val dataModelResult = getDataFromNetwork()
+                showDatabaseStatus(wondersDao)
+                clearAllTablesInDatabase(wondersDao)
+                showDatabaseStatus(wondersDao)
+                addAllItemsToDatabase(wondersDao, dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
+                prepareData(dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
-
                 Log.d(TAG, "Load data from network.")
             }
 
         } else {
             GlobalScope.launch(Dispatchers.IO) {
-                val result = getDataFromDatabase(wondersDao)
-
-                if(result.ancientWonders.isNotEmpty() and
-                        result.modernWonders.isNotEmpty() and
-                        result.natureWonders.isNotEmpty()) {
-
-                    ancientFragment = MainFragment(result.ancientWonders,
-                        LAYOUT_ANCIENT
-                    )
-                    modernFragment = MainFragment(result.modernWonders,
-                        LAYOUT_MODERN
-                    )
-                    natureFragment = MainFragment(result.natureWonders,
-                        LAYOUT_NATURE)
+                val listModelResult = getDataFromDatabase(wondersDao)
+                if(listModelResult.ancientWonders.isNotEmpty() and
+                        listModelResult.modernWonders.isNotEmpty() and
+                        listModelResult.natureWonders.isNotEmpty()) {
+                    prepareData(listModelResult.ancientWonders, listModelResult.modernWonders, listModelResult.natureWonders)
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
-                    showNetworkLostConnectionTextView("Оффлайн режим")
-
+                    showNetworkLostConnectionTextView(OFFLINE_MODE)
                     Log.d(TAG, "Load data from database.")
                 } else {
-                    showNetworkLostConnectionTextView("Не удалось загрузить данные! Проверьте подключение к интернету!")
-
+                    showNetworkLostConnectionTextView(LOST_CONNECTION)
                     Log.d(TAG, "Can't load data.")
                 }
             }
@@ -94,10 +78,47 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         return  networkInfo != null && networkInfo.isConnected
     }
 
-    private fun showNetworkLostConnectionTextView(message: String) {
-        text_view_network_main.text = message
-        text_view_network_main.setBackgroundResource(R.color.colorRed)
-        text_view_network_main.visibility = View.VISIBLE
+    private fun showNetworkLostConnectionTextView(status: Int) {
+        when(status) {
+            OFFLINE_MODE -> {
+                toolbar_button_network_main.setImageResource(R.drawable.ic_warning)
+                toolbar_button_network_main.setOnClickListener {
+                    Toast.makeText(this, "Соединение с сервером отсутствует.\nВключен оффлайн режим.", Toast.LENGTH_LONG).show()
+                }
+            }
+            LOST_CONNECTION -> {
+                toolbar_button_network_main.setImageResource(R.drawable.ic_error)
+                toolbar_button_network_main.setOnClickListener {
+                    Toast.makeText(this, "Соединение с сервером отсутствует.\nПожалуйста проверьте подключение к интернету!", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        toolbar_button_network_main.background = null
+        toolbar_button_network_main.visibility = View.VISIBLE
+    }
+
+    private suspend fun addAllItemsToDatabase(wondersDao: WondersDao, ancientWondersList: List<AncientWondersListItemModel>, modernWondersList: List<ModernWondersListItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
+        wondersDao.addAncientsWondersItems(ancientWondersList)
+        wondersDao.addModernWondersItems(modernWondersList)
+        wondersDao.addNatureWondersItems(natureWondersList)
+    }
+
+    private suspend fun clearAllTablesInDatabase(wondersDao: WondersDao) {
+        wondersDao.clearAncientWondersTable()
+        wondersDao.clearModernWondersTable()
+        wondersDao.clearNatureWondersTable()
+    }
+
+    private fun showDatabaseStatus(wondersDao: WondersDao) {
+        Log.d(TAG, wondersDao.getAllAncientWondersItems().toString())
+        Log.d(TAG, wondersDao.getAllModernWondersItems().toString())
+        Log.d(TAG, wondersDao.getAllNatureWondersItems().toString())
+    }
+
+    private fun prepareData(ancientWondersList: List<AncientWondersListItemModel>, modernWondersList: List<ModernWondersListItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
+        ancientFragment = MainFragment(ancientWondersList, LAYOUT_ANCIENT)
+        modernFragment = MainFragment(modernWondersList, LAYOUT_MODERN)
+        natureFragment = MainFragment(natureWondersList, LAYOUT_NATURE)
     }
 
     private suspend fun getDataFromDatabase(wondersDao: WondersDao) : ListModel {
@@ -185,5 +206,7 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         const val LAYOUT_MODERN = R.layout.modern_wonders_list_item
         const val LAYOUT_NATURE = R.layout.nature_wonders_list_item
         const val TAG = "MainActivity"
+        const val OFFLINE_MODE = 0
+        const val LOST_CONNECTION = 1
     }
 }

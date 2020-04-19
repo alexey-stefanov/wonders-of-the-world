@@ -4,7 +4,6 @@ import androidx.room.*
 import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
 import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
 import com.alexstephanov.wondersoftheworld.model.NatureWondersListItemModel
-import retrofit2.http.DELETE
 
 @Dao
 interface WondersDao {
@@ -15,7 +14,7 @@ interface WondersDao {
     suspend fun addAncientsWondersItems(listItemList: List<AncientWondersListItemModel>)
 
     @Query("DELETE FROM ancient_wonders_table")
-    suspend fun deleteAllAncientWondersItems()
+    suspend fun clearAncientWondersTable()
 
     @Query("SELECT * FROM modern_wonders_table")
     fun getAllModernWondersItems() : List<ModernWondersListItemModel>
@@ -24,7 +23,7 @@ interface WondersDao {
     suspend fun addModernWondersItems(listItemList: List<ModernWondersListItemModel>)
 
     @Query("DELETE FROM modern_wonders_table")
-    suspend fun deleteAllModernWondersItems()
+    suspend fun clearModernWondersTable()
 
     @Query("SELECT * FROM nature_wonders_table")
     fun getAllNatureWondersItems() : List<NatureWondersListItemModel>
@@ -33,12 +32,5 @@ interface WondersDao {
     suspend fun addNatureWondersItems(listItemList: List<NatureWondersListItemModel>)
 
     @Query("DELETE FROM nature_wonders_table")
-    suspend fun deleteAllNatureWondersItems()
-
-    suspend fun deleteAll() {
-        deleteAllAncientWondersItems()
-        deleteAllModernWondersItems()
-        deleteAllNatureWondersItems()
-    }
-
+    suspend fun clearNatureWondersTable()
 }

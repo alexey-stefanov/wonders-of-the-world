@@ -7,18 +7,38 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_main"
+        style="@style/Toolbar">
+
+        <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:padding="@dimen/spacing_8dp">
+
+            <TextView
+                android:id="@+id/toolbar_title_main"
+                android:text="@string/app_name"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TitleText"/>
+
+            <ImageButton
+                android:id="@+id/toolbar_button_network_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible"
+                android:contentDescription="@string/picture" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <FrameLayout
         android:id="@+id/fragment_place"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="20"/>
-
-    <TextView
-        android:id="@+id/text_view_network_main"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:visibility="invisible"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
