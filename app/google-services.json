@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "770756151719",
+    "firebase_url": "https://wonders-of-the-world-272107.firebaseio.com",
+    "project_id": "wonders-of-the-world-272107",
+    "storage_bucket": "wonders-of-the-world-272107.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770756151719:android:2b60edf77cd70b5968ce82",
+        "android_client_info": {
+          "package_name": "com.alexstephanov.wondersoftheworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770756151719-0db8dh4hfhsfje2jvhkbkdvn0dmnt6ic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJz45rDjfXgeW9h9yDLyZnX7oq6lUvy6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770756151719-0db8dh4hfhsfje2jvhkbkdvn0dmnt6ic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

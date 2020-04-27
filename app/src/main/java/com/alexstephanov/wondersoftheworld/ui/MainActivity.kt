@@ -15,6 +15,12 @@ import com.alexstephanov.wondersoftheworld.database.WondersDao
 import com.alexstephanov.wondersoftheworld.database.WondersDatabase
 import com.alexstephanov.wondersoftheworld.model.*
 import com.alexstephanov.wondersoftheworld.server_api.NetworkService
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,14 +37,11 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
     private var modernFragment: MainFragment<ModernWondersListItemModel>? = null
     private var natureFragment: MainFragment<NatureWondersListItemModel>? = null
 
-    private lateinit var toolbar: Toolbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toolbar = findViewById(R.id.toolbar_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar_main)
 
         val wondersDao = WondersDatabase.getInstance(this).getWondersDao()
 

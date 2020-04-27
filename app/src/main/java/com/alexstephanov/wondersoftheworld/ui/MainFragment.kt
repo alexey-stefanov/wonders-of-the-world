@@ -30,7 +30,7 @@ class MainFragment<T>(private val itemList: List<T>, private val layoutId: Int, 
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        recyclerView = view!!.findViewById(R.id.recycler_view_main_list)
+        recyclerView = view.findViewById(R.id.recycler_view_main_list)
         val buttonAncient: Button = view.findViewById(R.id.button_ancient_main)
         val buttonModern: Button = view.findViewById(R.id.button_modern_main)
         val buttonNature: Button = view.findViewById(R.id.button_nature_main)

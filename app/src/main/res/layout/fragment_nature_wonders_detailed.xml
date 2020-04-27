@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/spacing_32dp"
         android:layout_marginEnd="@dimen/spacing_16dp"
         android:layout_marginBottom="@dimen/spacing_32dp"
+        android:scrollbars="none"
         tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,8 +41,8 @@
                 android:id="@+id/name_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_4dp"
                 android:fontFamily="monospace"
+                android:padding="@dimen/spacing_4dp"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -58,10 +59,10 @@
                 android:layout_margin="@dimen/spacing_4dp"
                 android:textColor="@color/colorGray"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/type_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name_nature_wonders_detailed"
-                app:layout_constraintBottom_toTopOf="@id/type_nature_wonders_detailed"
                 tools:text="location" />
 
             <TextView
@@ -70,21 +71,21 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/description_text_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/location_nature_wonders_detailed"
-                app:layout_constraintBottom_toTopOf="@id/description_nature_wonders_detailed"
-                tools:text="type"/>
+                tools:text="type" />
 
             <TextView
                 android:id="@+id/description_text_nature_wonders_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 android:text="@string/description"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/spacing_16dp"
                 app:layout_constraintBottom_toTopOf="@id/description_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,11 +98,22 @@
                 android:padding="@dimen/spacing_8dp"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/map_nature_wonders_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_text_nature_wonders_detailed"
                 tools:text="description" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map_nature_wonders_detailed"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description_nature_wonders_detailed"
+                tools:context=".MainActivity" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

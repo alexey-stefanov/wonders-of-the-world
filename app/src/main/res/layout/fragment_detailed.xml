@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/spacing_32dp"
         android:layout_marginEnd="@dimen/spacing_16dp"
         android:layout_marginBottom="@dimen/spacing_32dp"
+        android:scrollbars="none"
         tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,11 +140,22 @@
                 android:padding="@dimen/spacing_8dp"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/map_detailed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description_text_detailed"
                 tools:text="description" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:id="@+id/map_detailed"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                app:layout_constraintTop_toBottomOf="@id/description_detailed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:context=".MainActivity"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

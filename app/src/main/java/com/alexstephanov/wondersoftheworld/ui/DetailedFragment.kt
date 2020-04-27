@@ -8,10 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.alexstephanov.wondersoftheworld.R
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detailed.*
 
-class DetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment() {
+class DetailedFragment(private var listener: OnFragmentEventListener? = null) : Fragment(), OnMapReadyCallback {
+
+    private lateinit var googleMap: GoogleMap
 
     private var id: Int? = null
     private var name: String? = null
@@ -55,6 +64,10 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val mapFragment = childFragmentManager
+            .findFragmentById(R.id.map_detailed) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+
         thumbnail = view.findViewById(R.id.thumbnail_detailed)
         Picasso.get().load(url).into(thumbnail)
 
@@ -74,6 +87,17 @@ class DetailedFragment(private var listener: OnFragmentEventListener? = null) : 
 
     interface OnFragmentEventListener {
         fun onBackgroundClickEvent()
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        googleMap = p0!!
+        val marker = LatLng(latitude!!, longitude!!)
+        val cameraPosition = CameraPosition.builder()
+            .target(marker)
+            .zoom(15f)
+            .build()
+        googleMap.addMarker(MarkerOptions().position(marker).title(name))
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
 }
