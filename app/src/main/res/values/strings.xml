@@ -8,4 +8,7 @@
     <string name="creation_date">Дата создания</string>
     <string name="destruction_date">Дата разрушения</string>
     <string name="location">Местоположение</string>
+    <string name="startSpeech">Озвучить текст</string>
+    <string name="pauseSpeech">Пазуа</string>
+    <string name="stopSpeech">Стоп</string>
 </resources>

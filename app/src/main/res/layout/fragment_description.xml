@@ -28,20 +28,51 @@
                 android:text="@string/description"
                 style="@style/TextAppearance.AppCompat.MediumTitle"
                 android:layout_marginTop="@dimen/spacing_16dp"
-                app:layout_constraintBottom_toTopOf="@id/description_detailed"
+                app:layout_constraintBottom_toTopOf="@id/button_start_text_to_speech"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/button_start_text_to_speech"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:text="@string/startSpeech"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:background="@drawable/button_speech_border"
+                android:layout_marginTop="@dimen/spacing_8dp"
+                android:layout_marginStart="@dimen/spacing_32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description_text_detailed"
+                app:layout_constraintBottom_toTopOf="@id/description_detailed"/>
+
+            <Button
+                android:id="@+id/button_stop_text_to_speech"
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:text="@string/stopSpeech"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:background="@drawable/button_speech_border"
+                android:layout_marginTop="@dimen/spacing_8dp"
+                android:layout_marginEnd="@dimen/spacing_32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description_text_detailed"
+                app:layout_constraintBottom_toTopOf="@id/description_detailed"/>
+
             <TextView
                 android:id="@+id/description_detailed"
+                style="@style/TextAppearance.AppCompat.Content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_8dp"
-                style="@style/TextAppearance.AppCompat.Content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description_text_detailed"
+                app:layout_constraintTop_toBottomOf="@+id/button_start_text_to_speech"
                 tools:text="description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
