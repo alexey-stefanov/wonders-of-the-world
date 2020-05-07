@@ -10,26 +10,26 @@ data class NatureWondersListItemModel(
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    val id: Int,
+    override val id: Int,
     @SerializedName("name")
     @Expose
-    val name: String,
+    override val name: String,
     @SerializedName("description")
     @Expose
-    val description: String,
-    @SerializedName("type")
-    @Expose
-    val type: String,
+    override val description: String,
     @SerializedName("location")
     @Expose
-    val location: String,
+    override val location: String,
+    @SerializedName("type")
+    @Expose
+    override val type: String,
     @SerializedName("latitude")
     @Expose
-    val latitude: Double,
+    override val latitude: Double,
     @SerializedName("longitude")
     @Expose
-    val longitude: Double,
+    override val longitude: Double,
     @SerializedName("url")
     @Expose
-    val url: String
-)
+    override val url: String
+) : ItemModel2

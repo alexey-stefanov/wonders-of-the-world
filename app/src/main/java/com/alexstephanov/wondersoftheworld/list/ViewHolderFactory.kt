@@ -4,8 +4,8 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.listeners.OnItemClickListener
-import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
-import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
+import com.alexstephanov.wondersoftheworld.model.AncientWondersItemModel
+import com.alexstephanov.wondersoftheworld.model.ModernWondersItemModel
 import com.alexstephanov.wondersoftheworld.model.NatureWondersListItemModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ancient_wonders_list_item.view.*
@@ -24,10 +24,10 @@ object ViewHolderFactory {
     }
 
     class AncientWondersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-            GenericAdapter.Binder<AncientWondersListItemModel> {
+            GenericAdapter.Binder<AncientWondersItemModel> {
         override fun bind(
-            item: AncientWondersListItemModel,
-            listener: OnItemClickListener<AncientWondersListItemModel>?
+            item: AncientWondersItemModel,
+            listener: OnItemClickListener<AncientWondersItemModel>?
         ) {
             itemView.apply {
                 ancient_wonders_item_title.text = item.name
@@ -40,10 +40,10 @@ object ViewHolderFactory {
     }
 
     class ModernWondersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-            GenericAdapter.Binder<ModernWondersListItemModel> {
+            GenericAdapter.Binder<ModernWondersItemModel> {
         override fun bind(
-            item: ModernWondersListItemModel,
-            listener: OnItemClickListener<ModernWondersListItemModel>?
+            item: ModernWondersItemModel,
+            listener: OnItemClickListener<ModernWondersItemModel>?
         ) {
             itemView.apply {
                 modern_wonders_item_title.text = item.name

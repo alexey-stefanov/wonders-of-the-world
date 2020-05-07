@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "ancient_wonders_table")
-data class AncientWondersListItemModel(
+data class AncientWondersItemModel(
     @PrimaryKey
     @SerializedName("id")
     @Expose
@@ -35,4 +35,4 @@ data class AncientWondersListItemModel(
     @SerializedName("url")
     @Expose
     override val url: String
-) : ListItemModel
+) : ItemModel1

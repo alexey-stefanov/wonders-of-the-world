@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_border"
+            android:background="@drawable/left_card_border"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical">

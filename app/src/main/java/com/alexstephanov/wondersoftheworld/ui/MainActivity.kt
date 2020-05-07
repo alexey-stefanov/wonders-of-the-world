@@ -7,20 +7,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.alexstephanov.wondersoftheworld.R
 import com.alexstephanov.wondersoftheworld.database.WondersDao
 import com.alexstephanov.wondersoftheworld.database.WondersDatabase
+import com.alexstephanov.wondersoftheworld.listeners.OnFragmentEventListener
 import com.alexstephanov.wondersoftheworld.model.*
 import com.alexstephanov.wondersoftheworld.server_api.NetworkService
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.alexstephanov.wondersoftheworld.ui.itemscreen.DetailedFragment
+import com.alexstephanov.wondersoftheworld.ui.mainscreen.HomeFragment
+import com.alexstephanov.wondersoftheworld.ui.mainscreen.ListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,11 +27,11 @@ import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListener<T>, DetailedFragment.OnFragmentEventListener, NatureWondersDetailedFragment.OnFragmentEventListener {
+class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListener<T>, OnFragmentEventListener {
 
-    private var ancientFragment: MainFragment<AncientWondersListItemModel>? = null
-    private var modernFragment: MainFragment<ModernWondersListItemModel>? = null
-    private var natureFragment: MainFragment<NatureWondersListItemModel>? = null
+    private var ancientFragment: ListFragment<AncientWondersItemModel>? = null
+    private var modernFragment: ListFragment<ModernWondersItemModel>? = null
+    private var natureFragment: ListFragment<NatureWondersListItemModel>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +49,11 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
                 showDatabaseStatus(wondersDao)
                 addAllItemsToDatabase(wondersDao, dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
                 prepareData(dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_place,
+                    HomeFragment(
+                        dataModelResult.listModel
+                    )
+                ).commitAllowingStateLoss()
                 Log.d(TAG, "Load data from network.")
             }
 
@@ -64,7 +64,11 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
                         listModelResult.modernWonders.isNotEmpty() and
                         listModelResult.natureWonders.isNotEmpty()) {
                     prepareData(listModelResult.ancientWonders, listModelResult.modernWonders, listModelResult.natureWonders)
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_place,
+                        HomeFragment(
+                            listModelResult
+                        )
+                    ).commitAllowingStateLoss()
                     showNetworkLostConnectionTextView(OFFLINE_MODE)
                     Log.d(TAG, "Load data from database.")
                 } else {
@@ -100,7 +104,7 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         toolbar_button_network_main.visibility = View.VISIBLE
     }
 
-    private suspend fun addAllItemsToDatabase(wondersDao: WondersDao, ancientWondersList: List<AncientWondersListItemModel>, modernWondersList: List<ModernWondersListItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
+    private suspend fun addAllItemsToDatabase(wondersDao: WondersDao, ancientWondersList: List<AncientWondersItemModel>, modernWondersList: List<ModernWondersItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
         wondersDao.addAncientsWondersItems(ancientWondersList)
         wondersDao.addModernWondersItems(modernWondersList)
         wondersDao.addNatureWondersItems(natureWondersList)
@@ -118,10 +122,23 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
         Log.d(TAG, wondersDao.getAllNatureWondersItems().toString())
     }
 
-    private fun prepareData(ancientWondersList: List<AncientWondersListItemModel>, modernWondersList: List<ModernWondersListItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
-        ancientFragment = MainFragment(ancientWondersList, LAYOUT_ANCIENT)
-        modernFragment = MainFragment(modernWondersList, LAYOUT_MODERN)
-        natureFragment = MainFragment(natureWondersList, LAYOUT_NATURE)
+    private fun prepareData(ancientWondersList: List<AncientWondersItemModel>, modernWondersList: List<ModernWondersItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
+        ancientFragment =
+            ListFragment(
+                ancientWondersList,
+                LAYOUT_ANCIENT
+            )
+        modernFragment =
+            ListFragment(
+                modernWondersList,
+                LAYOUT_MODERN
+            )
+        natureFragment =
+            ListFragment(
+                natureWondersList,
+                LAYOUT_NATURE
+            )
+
     }
 
     private suspend fun getDataFromDatabase(wondersDao: WondersDao) : ListModel {
@@ -159,9 +176,8 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
 
     override fun onItemClickEvent(itemModel: T) {
         val bundle = Bundle()
-        var fragment: Fragment? = null
         when(itemModel) {
-            is ListItemModel -> {
+            is ItemModel1 -> {
                 bundle.putInt("id", itemModel.id)
                 bundle.putString("name", itemModel.name)
                 bundle.putString("description", itemModel.description)
@@ -171,34 +187,33 @@ class MainActivity<T> : AppCompatActivity(), MainFragment.OnFragmentEventListene
                 bundle.putDouble("latitude", itemModel.latitude)
                 bundle.putDouble("longitude", itemModel.longitude)
                 bundle.putString("url", itemModel.url)
-                fragment = DetailedFragment()
+                Log.e("Detail", "ItemModel1")
             }
-            is NatureWondersListItemModel -> {
+            is ItemModel2 -> {
                 bundle.putInt("id", itemModel.id)
                 bundle.putString("name", itemModel.name)
                 bundle.putString("description", itemModel.description)
-                bundle.putString("type", itemModel.type)
                 bundle.putString("location", itemModel.location)
+                bundle.putString("type", itemModel.type)
                 bundle.putDouble("latitude", itemModel.latitude)
                 bundle.putDouble("longitude", itemModel.longitude)
                 bundle.putString("url", itemModel.url)
-                fragment = NatureWondersDetailedFragment()
+                Log.e("Detail", "ItemModel2")
             }
         }
-        fragment?.arguments = bundle
-        if (fragment != null) {
-            supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(
-                R.id.fragment_place, fragment).addToBackStack("detailed").commitAllowingStateLoss()
-        }
+        val detailedFragment =
+            DetailedFragment()
+        detailedFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(R.id.fragment_place, detailedFragment).addToBackStack("detailed").commitAllowingStateLoss()
     }
 
-    override fun onTopButtonsClickEvent(buttonId: Int) {
+    /*override fun onTopButtonsClickEvent(buttonId: Int) {
         when(buttonId) {
             0 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
             1 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, modernFragment!!).commitAllowingStateLoss()
             2 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, natureFragment!!).commitAllowingStateLoss()
         }
-    }
+    }*/
 
     override fun onBackgroundClickEvent() {
         supportFragmentManager.popBackStack()

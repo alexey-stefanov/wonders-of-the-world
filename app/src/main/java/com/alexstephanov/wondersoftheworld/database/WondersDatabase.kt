@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.alexstephanov.wondersoftheworld.model.AncientWondersListItemModel
-import com.alexstephanov.wondersoftheworld.model.ModernWondersListItemModel
+import com.alexstephanov.wondersoftheworld.model.AncientWondersItemModel
+import com.alexstephanov.wondersoftheworld.model.ModernWondersItemModel
 import com.alexstephanov.wondersoftheworld.model.NatureWondersListItemModel
 
-@Database(entities = [AncientWondersListItemModel::class, ModernWondersListItemModel::class, NatureWondersListItemModel::class], version = 1, exportSchema = false)
+@Database(entities = [AncientWondersItemModel::class, ModernWondersItemModel::class, NatureWondersListItemModel::class], version = 1, exportSchema = false)
 abstract class WondersDatabase : RoomDatabase() {
     abstract fun getWondersDao() : WondersDao
 

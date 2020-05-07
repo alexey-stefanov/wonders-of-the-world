@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wonders of the world</string>
+    <string name="app_name">MobiGuide - мобильный тур-гид</string>
     <string name="button_ancient">Древние</string>
     <string name="button_modern">Современные</string>
     <string name="button_nature">Природные</string>
@@ -7,4 +7,5 @@
     <string name="description">Описание</string>
     <string name="creation_date">Дата создания</string>
     <string name="destruction_date">Дата разрушения</string>
+    <string name="location">Местоположение</string>
 </resources>
