@@ -58,7 +58,6 @@ class DescriptionFragment(private var listener: OnFragmentEventListener? = null,
             listener?.onBackgroundClickEvent()
         }
     }
-
     override fun onInit(status: Int) {
         if(status == TextToSpeech.SUCCESS) {
             if (textToSpeech?.isLanguageAvailable(Locale(Locale.getDefault().language))

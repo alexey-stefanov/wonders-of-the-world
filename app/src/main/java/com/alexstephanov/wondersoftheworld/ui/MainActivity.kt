@@ -29,10 +29,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListener<T>, OnFragmentEventListener {
 
-    private var ancientFragment: ListFragment<AncientWondersItemModel>? = null
-    private var modernFragment: ListFragment<ModernWondersItemModel>? = null
-    private var natureFragment: ListFragment<NatureWondersListItemModel>? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,7 +44,6 @@ class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListene
                 clearAllTablesInDatabase(wondersDao)
                 showDatabaseStatus(wondersDao)
                 addAllItemsToDatabase(wondersDao, dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
-                prepareData(dataModelResult.listModel.ancientWonders, dataModelResult.listModel.modernWonders, dataModelResult.listModel.natureWonders)
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_place,
                     HomeFragment(
                         dataModelResult.listModel
@@ -63,7 +58,6 @@ class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListene
                 if(listModelResult.ancientWonders.isNotEmpty() and
                         listModelResult.modernWonders.isNotEmpty() and
                         listModelResult.natureWonders.isNotEmpty()) {
-                    prepareData(listModelResult.ancientWonders, listModelResult.modernWonders, listModelResult.natureWonders)
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_place,
                         HomeFragment(
                             listModelResult
@@ -120,25 +114,6 @@ class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListene
         Log.d(TAG, wondersDao.getAllAncientWondersItems().toString())
         Log.d(TAG, wondersDao.getAllModernWondersItems().toString())
         Log.d(TAG, wondersDao.getAllNatureWondersItems().toString())
-    }
-
-    private fun prepareData(ancientWondersList: List<AncientWondersItemModel>, modernWondersList: List<ModernWondersItemModel>, natureWondersList: List<NatureWondersListItemModel>) {
-        ancientFragment =
-            ListFragment(
-                ancientWondersList,
-                LAYOUT_ANCIENT
-            )
-        modernFragment =
-            ListFragment(
-                modernWondersList,
-                LAYOUT_MODERN
-            )
-        natureFragment =
-            ListFragment(
-                natureWondersList,
-                LAYOUT_NATURE
-            )
-
     }
 
     private suspend fun getDataFromDatabase(wondersDao: WondersDao) : ListModel {
@@ -207,22 +182,11 @@ class MainActivity<T> : AppCompatActivity(), ListFragment.OnFragmentEventListene
         supportFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).add(R.id.fragment_place, detailedFragment).addToBackStack("detailed").commitAllowingStateLoss()
     }
 
-    /*override fun onTopButtonsClickEvent(buttonId: Int) {
-        when(buttonId) {
-            0 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, ancientFragment!!).commitAllowingStateLoss()
-            1 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, modernFragment!!).commitAllowingStateLoss()
-            2 -> supportFragmentManager.beginTransaction().replace(R.id.fragment_place, natureFragment!!).commitAllowingStateLoss()
-        }
-    }*/
-
     override fun onBackgroundClickEvent() {
         supportFragmentManager.popBackStack()
     }
 
     companion object {
-        const val LAYOUT_ANCIENT = R.layout.ancient_wonders_list_item
-        const val LAYOUT_MODERN = R.layout.modern_wonders_list_item
-        const val LAYOUT_NATURE = R.layout.nature_wonders_list_item
         const val TAG = "MainActivity"
         const val OFFLINE_MODE = 0
         const val LOST_CONNECTION = 1
