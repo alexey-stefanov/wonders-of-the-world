@@ -1,2 +1,4 @@
 # WondersOfTheWorld
-Simple application using Kotlin courutines, Fragments, Retrofit, Google Maps etc.
+Simple mobile tour guide.
+
+Technologies: Kotlin coroutines, Fragments, Retrofit, Google Maps etc.
